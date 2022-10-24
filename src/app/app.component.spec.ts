@@ -1,35 +1,62 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { RouterLinkDirectiveStub } from 'src/testing/router-link-directive-stub';
+import { queryAllByDirective } from 'src/testing';
+import { RouterLink } from '@angular/router';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 
-xdescribe('AppComponent', () => {
+@Component({
+  selector: 'app-banner'
+})
+class BannerComponentStub {};
+
+@Component({
+  selector: 'app-footer'
+})
+class FooterComponentStub{};
+
+fdescribe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        RouterLinkDirectiveStub,
+        FooterComponentStub,
+        BannerComponentStub
       ],
+      // schemas: [
+      //   NO_ERRORS_SCHEMA
+      // ]
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'ng-testing-services'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ng-testing-services');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  beforeEach(()=> {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('ng-testing-services app is running!');
+  })
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should have 7 routerLinks', () => {
+    const links = queryAllByDirective(fixture, RouterLinkDirectiveStub);
+    expect(links.length).toEqual(7)
+  });
+
+  it('should have 7 routerLinks with match in routes', () => {
+    const links = queryAllByDirective(fixture, RouterLinkDirectiveStub);
+    const routerLinks = links.map(link => link.injector.get(RouterLinkDirectiveStub));
+
+    expect(routerLinks[0].linkParams).toEqual('/');
+    expect(routerLinks[1].linkParams).toEqual('/auth/register');
   });
 });

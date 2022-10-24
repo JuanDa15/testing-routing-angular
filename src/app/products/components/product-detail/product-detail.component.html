@@ -1,13 +1,14 @@
 <section class="container">
   <article>
     <a (click)="goToBack()">Back</a>
-    <div class="detail" *ngIf="product">
+    <h2 *ngIf="type">Type: {{type}}</h2>
+    <div id="product" class="detail" *ngIf="product">
       <figure>
         <img [src]="product.images[0]" alt="">
       </figure>
       <div>
-        <h1>{{ product.title }}</h1>
-        <h2>{{ product.price | currency }}</h2>
+        <h1 data-testid="product-title">{{ product.title }}</h1>
+        <h2 data-testid="product-price">{{ product.price | currency }}</h2>
       </div>
     </div>
   </article>
