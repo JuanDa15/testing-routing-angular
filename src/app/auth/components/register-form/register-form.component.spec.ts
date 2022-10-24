@@ -5,20 +5,24 @@ import { RegisterFormComponent } from './register-form.component';
 import { UsersService } from './../../../services/user.service';
 import { generateOneUser } from './../../../models/user.mock';
 import { asyncData, getText, mockObservable, query, queryById, setInputValue, setCheckboxValue, clickEvent, clickElement, asyncError } from 'src/testing';
+import { Router, RouterModule } from '@angular/router';
 
 describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
   let userService: jasmine.SpyObj<UsersService>;
-
+  let router: jasmine.SpyObj<Router>;
   beforeEach(async () => {
     const spy = jasmine.createSpyObj('UsersService', ['create', 'isAvailableByEmail']);
-
+    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     await TestBed.configureTestingModule({
       declarations: [ RegisterFormComponent ],
-      imports: [ ReactiveFormsModule ],
+      imports: [
+        ReactiveFormsModule
+      ],
       providers: [
         { provide:  UsersService, useValue: spy },
+        { provide: Router, useValue: routerSpy }
       ]
     })
     .compileComponents();
@@ -27,6 +31,7 @@ describe('RegisterFormComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterFormComponent);
     userService = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     component = fixture.componentInstance;
     userService.isAvailableByEmail.and.returnValue(mockObservable({isAvailable: true}));
     fixture.detectChanges();
@@ -186,4 +191,27 @@ describe('RegisterFormComponent', () => {
     const errorMsg = getText(fixture, 'emailField-not-available');
     expect(errorMsg).toContain('The email is already registered');
   });
+
+  it('should navigate to login', fakeAsync(() => {
+    setInputValue(fixture, 'input#name', 'Nico');
+    setInputValue(fixture, 'input#email', 'nico@gmil.com');
+    setInputValue(fixture, 'input#password', '12121212');
+    setInputValue(fixture, 'input#confirmPassword', '12121212');
+    setCheckboxValue(fixture, 'input#terms', true);
+    const mockUser = generateOneUser();
+    userService.create.and.returnValue(asyncData(mockUser));
+    // Act
+    // component.register(new Event('submit'));
+    clickElement(fixture, 'btn-submit', true);
+    // query(fixture, 'form').triggerEventHandler('ngSubmit', new Event('submit'));
+    fixture.detectChanges();
+    expect(component.status).toEqual('loading');
+
+    tick();  // exec pending tasks
+    fixture.detectChanges();
+    expect(component.status).toEqual('success');
+    expect(component.form.valid).toBeTruthy();
+    expect(userService.create).toHaveBeenCalled();
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/login');
+  }));
 });
