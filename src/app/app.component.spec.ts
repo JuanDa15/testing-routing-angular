@@ -9,11 +9,13 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 @Component({
   selector: 'app-banner'
 })
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class BannerComponentStub {};
 
 @Component({
   selector: 'app-footer'
 })
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 class FooterComponentStub{};
 
 fdescribe('AppComponent', () => {
