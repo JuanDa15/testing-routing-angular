@@ -20,7 +20,7 @@ class HostComponent {
   color = 'pink';
 }
 
-describe('HighlightDirective', () => {
+xdescribe('HighlightDirective', () => {
 
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
