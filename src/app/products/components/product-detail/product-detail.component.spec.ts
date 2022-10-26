@@ -8,7 +8,7 @@ import { ActivatedRouteStub, asyncData, asyncError, getText, mockObservable } fr
 
 import { ProductDetailComponent } from './product-detail.component';
 
-fdescribe('ProductDetailComponent', () => {
+describe('ProductDetailComponent', () => {
   let component: ProductDetailComponent;
   let fixture: ComponentFixture<ProductDetailComponent>;
   let route: ActivatedRouteStub;

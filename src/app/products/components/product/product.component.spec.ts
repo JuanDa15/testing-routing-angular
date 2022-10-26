@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { generateOneProduct } from 'src/app/models/product.mock';
+import { ProductsService } from 'src/app/services/product.service';
 
 import { ProductComponent } from './product.component';
 
-xdescribe('ProductComponent', () => {
+describe('ProductComponent', () => {
   let component: ProductComponent;
   let fixture: ComponentFixture<ProductComponent>;
+  let productsService: jasmine.SpyObj<ProductsService>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,6 +23,9 @@ xdescribe('ProductComponent', () => {
   });
 
   it('should create', () => {
+    const product = generateOneProduct();
+    component.product = product;
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });

@@ -20,7 +20,7 @@ class HostComponent {
   color = 'pink';
 }
 
-xdescribe('HighlightDirective', () => {
+describe('HighlightDirective', () => {
 
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
@@ -48,6 +48,7 @@ xdescribe('HighlightDirective', () => {
     const elements = queryAllByDirective(fixture, HighlightDirective);
     // const elementsWithout = fixture.debugElement.queryAll(By.css('*:not([highlight])'));
     const elementsWithout = queryAll(fixture, '*:not([highlight])');
+    console.log(elements.length)
     expect(elements.length).toEqual(4);
     expect(elementsWithout.length).toEqual(2);
   });

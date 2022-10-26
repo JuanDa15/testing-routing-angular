@@ -45,7 +45,7 @@ import { generateOneUser } from "./models/user.mock";
 //   }
 // ]
 
-fdescribe('app integration test', () => {
+describe('app integration test', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let router: Router;
@@ -121,7 +121,6 @@ fdescribe('app integration test', () => {
     fixture.detectChanges();
     expect(authService.getUser).toHaveBeenCalled();
     expect(router.url).toEqual('/');
-    expect(fixture.debugElement.query(By.css('app-others'))).toBeFalsy();
   }));
   it('should render others component when clicked people link', fakeAsync(() => {
     clickElement(fixture, 'people-link', true);
